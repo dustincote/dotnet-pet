@@ -177,6 +177,8 @@ class PetsTable extends Component {
 
    checkIn = async (id) => {
       try {
+         // We have to figure out how to time-stamp the check-in time. 
+         // Endpoint: pets/id/checkin.
          await axios.put(`api/pets/${id}/checkin`);
          this.setState({
             errors: [],

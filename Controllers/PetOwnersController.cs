@@ -15,5 +15,29 @@ namespace pet_hotel.Controllers
         public PetOwnersController(ApplicationContext context) {
             _context = context;
         }
+
+        // Begin GET all owners
+        [HttpGet]
+        public IEnumerable<PetOwner> getAllOwners()
+        {
+            Console.WriteLine("Getting owner list");
+            return _context
+                .petOwners
+                .Include(owner => owner.pets)
+                .ToList();
+        }
+        // End GET all owners
+        
+        //GET on owner by id
+        [HttpGet("{id}")]
+        public IActionResult getPetOwnerById(int id) {
+            PetOwner petOwner = _context.petOwners.Find(id);
+            if (petOwner == null) return NotFound();
+            return Ok(petOwner);
+        }
+
+
+
+        
     }
 }
