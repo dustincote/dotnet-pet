@@ -46,6 +46,9 @@ namespace pet_hotel.Controllers
                 ModelState.AddModelError("petOwnerid", "Invalid Owner ID");
                 return ValidationProblem(ModelState);
             }
+            Transaction note = new Transaction();
+            note.transaction = $"Posting new pet {animal.name} ";
+            _context.Add(note);
             
             _context.Add(newAnimal);
             _context.SaveChanges();
@@ -61,6 +64,10 @@ namespace pet_hotel.Controllers
             // Remove it from the context
             _context.pets.Remove(animal);
 
+        Transaction note = new Transaction();
+        note.transaction = $"Delete Pet  {animal.name} ";
+        _context.Add(note);
+
             // Save Context
             _context.SaveChanges();
            return NoContent();
@@ -74,6 +81,9 @@ namespace pet_hotel.Controllers
       
          bool exists = _context.pets.Any(pet => pet.id == updatePet.id);
          if (!exists) return NotFound();
+            Transaction note = new Transaction();
+            note.transaction = $"Update Pet {updatePet.name} ";
+            _context.Add(note);
 
          // _context.Entry(updatePet).State = EntityState.Modified;
          _context.pets.Update(updatePet);
@@ -91,8 +101,12 @@ namespace pet_hotel.Controllers
             Pet pet = _context.pets.Find(id);
             pet.checkIn();
             _context.Update(pet);
+            Transaction note = new Transaction();
+            note.transaction = $"Checking in {pet.name} ";
+            _context.Add(note);
             _context.SaveChanges();
             return Ok(pet)
+
 ;        }
 
  // update checkedInAt to be checked out
@@ -102,6 +116,10 @@ namespace pet_hotel.Controllers
             Pet pet = _context.pets.Find(id);
             pet.checkOut();
             _context.Update(pet);
+        
+            Transaction note = new Transaction();
+            note.transaction = $"Checking out {pet.name} ";
+            _context.Add(note);
             _context.SaveChanges();
             return Ok(pet);
         }

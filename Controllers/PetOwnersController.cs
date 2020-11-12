@@ -21,10 +21,6 @@ namespace pet_hotel.Controllers
         public IEnumerable<PetOwner> getAllOwners()
         {
             Console.WriteLine("Getting owner list");
-            Transaction note = new Transaction();
-            note.transaction = "getting list of owners";
-            _context.Add(note);
-            _context.SaveChanges();
             return _context
                 .petOwners
                 .Include(owner => owner.pets)
@@ -45,7 +41,7 @@ namespace pet_hotel.Controllers
         [HttpPost]
         public IActionResult createOwner([FromBody] PetOwner newOwner) {
            Transaction note = new Transaction();
-            note.transaction = "Posting new pet owner";
+            note.transaction = $"Posting new pet owner {newOwner.name}";
             _context.Add(note);
             _context.Add(newOwner);
             _context.SaveChanges();
@@ -63,6 +59,10 @@ namespace pet_hotel.Controllers
          bool exists = _context.petOwners.Any(owner => owner.id == updateOwner.id);
          if (!exists) return NotFound();
 
+        Transaction note = new Transaction();
+        note.transaction = $"Update Pet Owner {updateOwner.name}";
+        _context.Add(note);
+
          // _context.Entry(updateOwner).State = EntityState.Modified;
          _context.petOwners.Update(updateOwner);
          
@@ -76,8 +76,11 @@ namespace pet_hotel.Controllers
     [HttpDelete("{id}")]
     public IActionResult deletePetOwner(int id) {
         PetOwner petOwner =_context.petOwners.Find(id);
-        //^--is the class we are looking ^--is the table we are deleting from
-        //remove from context
+            //^--is the class we are looking ^--is the table we are deleting from
+            //remove from context
+        Transaction note = new Transaction();
+        note.transaction = $"Delete Pet Owner {petOwner.name} ";
+        _context.Add(note);
         _context.petOwners.Remove(petOwner);
 
         _context.SaveChanges();

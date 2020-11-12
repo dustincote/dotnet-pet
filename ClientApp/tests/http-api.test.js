@@ -11,10 +11,13 @@ test('Create a new pet owner via HTTP POST', async () => {
     // nothing to do yet
     const newOwner = {name: 'test owner', emailAddress: 'test@example.com'};
     const response = await axios.post(`${SERVER_URL}/api/petowners`, newOwner);
+    const transactions = await axios.get(`${SERVER_URL}/api/transactions`);
     petOwner = response.data;
     expect(response.status).toBe(201);
     expect(typeof(response.data)).toBe(typeof({}));
     expect(typeof(response.data.id)).toBe(typeof(0));
+    // console.log('Transaction.data.length is ',transactions.data[]);
+    expect(transactions.data[transactions.data.length - 1].transaction).toBe(`Posting new pet owner ${ newOwner.name }`);
     console.log(`Pet Owner created with id ${petOwner.id}`);
     // console.log(response.data);
 });
@@ -113,4 +116,12 @@ test('Delete the pet owner via HTTP DELETE', async () => {
     // nothing to do yet
     const response = await axios.delete(`${SERVER_URL}/api/petowners/${petOwner.id}`);
     expect(response.status).toBe(204);
+});
+/********************* Transactions Tests! /**********************/
+
+test('Get All transactions via HTTP GET', async () => {
+    // nothing to do yet
+    const response = await axios.get(`${SERVER_URL}/api/transactions`);
+    expect(response.status).toBe(200);
+    expect(typeof (response.data)).toBe(typeof ([]));
 });
