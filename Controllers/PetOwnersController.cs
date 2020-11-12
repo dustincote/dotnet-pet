@@ -21,6 +21,10 @@ namespace pet_hotel.Controllers
         public IEnumerable<PetOwner> getAllOwners()
         {
             Console.WriteLine("Getting owner list");
+            Transaction note = new Transaction();
+            note.transaction = "getting list of owners";
+            _context.Add(note);
+            _context.SaveChanges();
             return _context
                 .petOwners
                 .Include(owner => owner.pets)
@@ -40,6 +44,9 @@ namespace pet_hotel.Controllers
         //Post new owner
         [HttpPost]
         public IActionResult createOwner([FromBody] PetOwner newOwner) {
+           Transaction note = new Transaction();
+            note.transaction = "Posting new pet owner";
+            _context.Add(note);
             _context.Add(newOwner);
             _context.SaveChanges();
             return CreatedAtAction(nameof(getPetOwnerById), new { id = newOwner.id}, newOwner);

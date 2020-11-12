@@ -25,7 +25,7 @@ namespace pet_hotel
         public void checkIn()
         {
             // We believe this should work due to research at 'dotnetperls'
-            this.checkedInAt = DateTime.Now;
+            this.checkedInAt = DateTime.UtcNow;
         }//move on to set up controllers
 
         public void checkOut()
