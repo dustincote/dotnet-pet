@@ -47,7 +47,7 @@ namespace pet_hotel.Controllers
                 return ValidationProblem(ModelState);
             }
             Transaction note = new Transaction();
-            note.transaction = $"Posting new pet {animal.name} ";
+            note.transaction = $"Posting new pet {newAnimal.name} ";
             _context.Add(note);
             
             _context.Add(newAnimal);

@@ -26,10 +26,13 @@ test(`Update the pet owner via HTTP PUT`, async () => {
     const newName = 'test owner 2';
     const newOwner = {...petOwner, name: newName};
     const response = await axios.put(`${SERVER_URL}/api/petowners/${petOwner.id}`, newOwner);
+    const transactions = await axios.get(`${SERVER_URL}/api/transactions`); 
+    expect(transactions.data[transactions.data.length - 1].transaction).toBe(`Update Pet Owner ${newOwner.name}`);
     expect(response.status).toBe(200);
     expect(response.data.name).toBe(newName);
-    console.log(`Pet Owner with id ${petOwner.id} name changed to ${newName}`);
     petOwner = response.data;
+    console.log(`Pet Owner with id ${petOwner.id} name changed to ${newName}`);
+    
 })
 
 test(`Get the updated pet owner via HTTP GET`, async () => {
@@ -61,12 +64,15 @@ test('Create a new pet via HTTP POST', async () => {
     // nothing to do yet
     const newPet = {name: 'Fido 1', breed: 'Retriever', color: 'Golden', petOwnerid: petOwner.id};
     let response;
+    let transactions;
     try {
         response = await axios.post(`${SERVER_URL}/api/pets`, newPet);
+        transactions = await axios.get(`${SERVER_URL}/api/transactions`); 
     } catch (err) {
         console.log(err.response.data);
     }
     pet = response.data;
+    expect(transactions.data[transactions.data.length - 1].transaction).toBe(`Posting new pet ${newPet.name} `);
     expect(response.status).toBe(201);
     expect(typeof(response.data)).toBe(typeof({}));
     expect(typeof(response.data.id)).toBe(typeof(0));
@@ -80,6 +86,8 @@ test('Update the pet via HTTP PUT', async () => {
     const newName = 'Fido II';
     const newPet = {...pet, name: newName, color: 'Black'};
     const response = await axios.put(`${SERVER_URL}/api/pets/${pet.id}`, newPet);
+    const transactions = await axios.get(`${SERVER_URL}/api/transactions`); 
+    expect(transactions.data[transactions.data.length - 1].transaction).toBe(`Update Pet ${newPet.name} `);
     expect(response.status).toBe(200);
     expect(response.data.name).toBe(newName);
     console.log(`Pet  with id ${pet.id} name changed to ${newName}`);
@@ -88,6 +96,8 @@ test('Update the pet via HTTP PUT', async () => {
 
 test('Check in the pet via HTTP PUT', async () => {
     const response = await axios.put(`${SERVER_URL}/api/pets/${pet.id}/checkin`);
+    const transactions = await axios.get(`${SERVER_URL}/api/transactions`); 
+    expect(transactions.data[transactions.data.length - 1].transaction).toBe(`Checking in ${pet.name} `);
     expect(response.status).toBe(200);
     expect(response.data.name).toBe(pet.name);
     expect(typeof(response.data.checkedInAt)).toBe(typeof(''));
@@ -98,6 +108,8 @@ test('Check in the pet via HTTP PUT', async () => {
 
 test('Check out the pet via HTTP PUT', async () => {
     const response = await axios.put(`${SERVER_URL}/api/pets/${pet.id}/checkout`);
+    const transactions = await axios.get(`${SERVER_URL}/api/transactions`); 
+    expect(transactions.data[transactions.data.length - 1].transaction).toBe(`Checking out ${pet.name} `);
     expect(response.status).toBe(200);
     expect(response.data.name).toBe(pet.name);
     expect(response.data.checkedInAt).toBeNull();
