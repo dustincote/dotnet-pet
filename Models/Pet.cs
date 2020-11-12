@@ -15,11 +15,11 @@ namespace pet_hotel
         [Required]
         public string name {get; set;}
         [Required]
-        public string PetBreed {get; set;}
+        public string Breed {get; set;}
         [Required]
-        public string PetColor {get; set;}
-        public DateTime checkedInAt {get; set;} 
-        public PetOwner owner {get; set;}//sets up foreign key for petOwnerid
+        public string Color {get; set;}
+        public DateTime? checkedInAt {get; set;} 
+        public PetOwner petOwner {get; set;}//sets up foreign key for petOwnerid
         public int petOwnerid {get; set;}//send in the petOwnerid so we do not have to send in an entire PetOwner
             
         public void checkIn()
@@ -27,5 +27,10 @@ namespace pet_hotel
             // We believe this should work due to research at 'dotnetperls'
             this.checkedInAt = DateTime.Now;
         }//move on to set up controllers
+
+        public void checkOut()
+        {
+            this.checkedInAt = null;
+        }
     }
 }

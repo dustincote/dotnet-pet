@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using pet_hotel.Models;
@@ -9,9 +10,10 @@ using pet_hotel.Models;
 namespace dotnet_bakery.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20201112163345_setDateTimeNullable")]
+    partial class setDateTimeNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,11 +28,11 @@ namespace dotnet_bakery.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Breed")
+                    b.Property<string>("PetBreed")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Color")
+                    b.Property<string>("PetColor")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -73,7 +75,7 @@ namespace dotnet_bakery.Migrations
 
             modelBuilder.Entity("pet_hotel.Pet", b =>
                 {
-                    b.HasOne("pet_hotel.PetOwner", "petOwner")
+                    b.HasOne("pet_hotel.PetOwner", "owner")
                         .WithMany("pets")
                         .HasForeignKey("petOwnerid")
                         .OnDelete(DeleteBehavior.Cascade)
