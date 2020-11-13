@@ -23,5 +23,11 @@ namespace pet_hotel.Controllers
          return _context.transactions.OrderBy(transaction => transaction.id).Skip(start).Take(limit).ToList();
         }
 
+        [HttpGet]
+        public IEnumerable<Transaction> getAllTransactions2()
+        {
+            return _context.transactions.OrderBy(transaction => transaction.id).ToList();
+        }
+
     }
 }
