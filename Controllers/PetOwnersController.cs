@@ -34,7 +34,10 @@ namespace pet_hotel.Controllers
         public IActionResult getPetOwnerById(int id)
         {
             PetOwner petOwner = _context.petOwners.Find(id);
-            if (petOwner == null) return NotFound();
+            if (petOwner == null){
+                ModelState.AddModelError("id", "Pet Checked in cannot delete");
+                return ValidationProblem(ModelState);
+            };
             return Ok(petOwner);
         }
         // End GET on owner by id
@@ -85,6 +88,9 @@ namespace pet_hotel.Controllers
             PetOwner petOwner = _context.petOwners.Find(id);
             //^--is the class we are looking ^--is the table we are deleting from
             //remove from context
+            //checking to see if pet is checked in and not allowing the pet to be deleted
+            bool exists = _context.pets.Any(pet => pet.petOwnerid == id && pet.checkedInAt != null);
+            if (exists) return NotFound();
             Transaction note = new Transaction();
             note.transaction = $"Delete Pet Owner {petOwner.name} ";
             note.transactionTime = DateTime.UtcNow;
