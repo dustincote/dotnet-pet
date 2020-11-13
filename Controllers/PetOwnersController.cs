@@ -12,7 +12,8 @@ namespace pet_hotel.Controllers
     public class PetOwnersController : ControllerBase
     {
         private readonly ApplicationContext _context;
-        public PetOwnersController(ApplicationContext context) {
+        public PetOwnersController(ApplicationContext context)
+        {
             _context = context;
         }
 
@@ -27,10 +28,11 @@ namespace pet_hotel.Controllers
                 .ToList();
         }
         // End GET all owners
-        
+
         //GET on owner by id
         [HttpGet("{id}")]
-        public IActionResult getPetOwnerById(int id) {
+        public IActionResult getPetOwnerById(int id)
+        {
             PetOwner petOwner = _context.petOwners.Find(id);
             if (petOwner == null) return NotFound();
             return Ok(petOwner);
@@ -39,53 +41,59 @@ namespace pet_hotel.Controllers
 
         //Post new owner
         [HttpPost]
-        public IActionResult createOwner([FromBody] PetOwner newOwner) {
-           Transaction note = new Transaction();
+        public IActionResult createOwner([FromBody] PetOwner newOwner)
+        {
+            Transaction note = new Transaction();
             note.transaction = $"Posting new pet owner {newOwner.name}";
+            note.transactionTime = DateTime.UtcNow;
             _context.Add(note);
             _context.Add(newOwner);
             _context.SaveChanges();
-            return CreatedAtAction(nameof(getPetOwnerById), new { id = newOwner.id}, newOwner);
+            return CreatedAtAction(nameof(getPetOwnerById), new { id = newOwner.id }, newOwner);
         }
         //End Post new owner
-        
- // PUT /api/petOwners/1 with a body of a owner object to update
-      [HttpPut("{id}")]
-      public IActionResult updateOwner ([FromBody] PetOwner updateOwner) {
 
-         // Make sure there *is* an owner with an id of updateOwner.id
-         // If not, 404 not found
-      
-         bool exists = _context.petOwners.Any(owner => owner.id == updateOwner.id);
-         if (!exists) return NotFound();
+        // PUT /api/petOwners/1 with a body of a owner object to update
+        [HttpPut("{id}")]
+        public IActionResult updateOwner([FromBody] PetOwner updateOwner)
+        {
 
-        Transaction note = new Transaction();
-        note.transaction = $"Update Pet Owner {updateOwner.name}";
-        _context.Add(note);
+            // Make sure there *is* an owner with an id of updateOwner.id
+            // If not, 404 not found
 
-         // _context.Entry(updateOwner).State = EntityState.Modified;
-         _context.petOwners.Update(updateOwner);
-         
-         // Save it
-         _context.SaveChanges();
+            bool exists = _context.petOwners.Any(owner => owner.id == updateOwner.id);
+            if (!exists) return NotFound();
 
-         // Return the new owner withOk()
-         return Ok(updateOwner);
-    }
-    
-    [HttpDelete("{id}")]
-    public IActionResult deletePetOwner(int id) {
-        PetOwner petOwner =_context.petOwners.Find(id);
+            Transaction note = new Transaction();
+            note.transaction = $"Update Pet Owner {updateOwner.name}";
+            note.transactionTime = DateTime.UtcNow;
+            _context.Add(note);
+
+            // _context.Entry(updateOwner).State = EntityState.Modified;
+            _context.petOwners.Update(updateOwner);
+
+            // Save it
+            _context.SaveChanges();
+
+            // Return the new owner withOk()
+            return Ok(updateOwner);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult deletePetOwner(int id)
+        {
+            PetOwner petOwner = _context.petOwners.Find(id);
             //^--is the class we are looking ^--is the table we are deleting from
             //remove from context
-        Transaction note = new Transaction();
-        note.transaction = $"Delete Pet Owner {petOwner.name} ";
-        _context.Add(note);
-        _context.petOwners.Remove(petOwner);
+            Transaction note = new Transaction();
+            note.transaction = $"Delete Pet Owner {petOwner.name} ";
+            note.transactionTime = DateTime.UtcNow;
+            _context.Add(note);
+            _context.petOwners.Remove(petOwner);
 
-        _context.SaveChanges();
+            _context.SaveChanges();
 
-        return NoContent();
-    }
+            return NoContent();
+        }
     }
 }

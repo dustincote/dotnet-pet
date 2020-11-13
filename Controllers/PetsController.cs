@@ -48,6 +48,7 @@ namespace pet_hotel.Controllers
             }
             Transaction note = new Transaction();
             note.transaction = $"Posting new pet {newAnimal.name} ";
+            note.transactionTime = DateTime.UtcNow;
             _context.Add(note);
             
             _context.Add(newAnimal);
@@ -66,7 +67,8 @@ namespace pet_hotel.Controllers
 
         Transaction note = new Transaction();
         note.transaction = $"Delete Pet  {animal.name} ";
-        _context.Add(note);
+        note.transactionTime = DateTime.UtcNow;
+            _context.Add(note);
 
             // Save Context
             _context.SaveChanges();
@@ -83,6 +85,7 @@ namespace pet_hotel.Controllers
          if (!exists) return NotFound();
             Transaction note = new Transaction();
             note.transaction = $"Update Pet {updatePet.name} ";
+            note.transactionTime = DateTime.UtcNow;
             _context.Add(note);
 
          // _context.Entry(updatePet).State = EntityState.Modified;
@@ -103,6 +106,7 @@ namespace pet_hotel.Controllers
             _context.Update(pet);
             Transaction note = new Transaction();
             note.transaction = $"Checking in {pet.name} ";
+            note.transactionTime = DateTime.UtcNow;
             _context.Add(note);
             _context.SaveChanges();
             return Ok(pet)
@@ -119,6 +123,7 @@ namespace pet_hotel.Controllers
         
             Transaction note = new Transaction();
             note.transaction = $"Checking out {pet.name} ";
+            note.transactionTime = DateTime.UtcNow;
             _context.Add(note);
             _context.SaveChanges();
             return Ok(pet);

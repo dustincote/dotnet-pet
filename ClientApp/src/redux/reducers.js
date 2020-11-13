@@ -9,3 +9,10 @@ export const petsReducer = (state = [], action) => {
       return action.payload;
     return state;
   }
+
+export const transactionsReducer = (state = [], action) => {
+  if (action.type === 'SET_TRANSACTIONS')
+    return action.payload;
+  return state;
+}
+

@@ -16,11 +16,11 @@ namespace pet_hotel.Controllers
             _context = context;
         }
 
-        [HttpGet]
-        public IEnumerable<Transaction> getAllTransactions()
+        [HttpGet("{start}/{limit}")]
+        public IEnumerable<Transaction> getAllTransactions(int start, int limit)
         {
          Console.WriteLine("Getting Transactions");
-         return _context.transactions.OrderBy(transaction => transaction.id).ToList();
+         return _context.transactions.OrderBy(transaction => transaction.id).Skip(start).Take(limit).ToList();
         }
 
     }
