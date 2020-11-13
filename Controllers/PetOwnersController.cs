@@ -35,7 +35,7 @@ namespace pet_hotel.Controllers
         {
             PetOwner petOwner = _context.petOwners.Find(id);
             if (petOwner == null){
-                ModelState.AddModelError("id", "Pet Checked in cannot delete");
+                ModelState.AddModelError("checkedIn", "Pet Checked in cannot delete");
                 return ValidationProblem(ModelState);
             };
             return Ok(petOwner);

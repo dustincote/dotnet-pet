@@ -19,9 +19,10 @@ class Transactions extends Component {
     }
 
     nextPage = () => {
+        if(this.props.transactions.length === 10){
         this.setState({
             page: this.state.page + 10
-        });
+        });}
     }
 
     previousPage = () => {
@@ -36,11 +37,12 @@ class Transactions extends Component {
 
         return (
             <>
-                <h2> Transaction History </h2>
                 <div className="table-responsive">
-                    <div className="historyButtons">
-                    <button className={"form-control btn btn-primary mr-2 col-md-2"} onClick={this.previousPage}>Previous Page</button>
-                    <button className={"form-control btn btn-primary col-md-2"} onClick={this.nextPage}>Next Page</button>
+            
+                        <div className="historyButtons">
+                        <span className='trans-heading'> Transaction History </span>
+                    <button className={" btn btn-primary mt-2 page-button"} onClick={this.previousPage}>Previous Page</button>
+                    <button className={" btn btn-primary mt-2 mr-2 page-button"} onClick={this.nextPage}>Next Page</button>
                     </div>
                     <table className='table table-striped table-bordered table-hover' aria-labelledby="tabelLabel">
                         <thead>
