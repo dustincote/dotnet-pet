@@ -8,7 +8,7 @@ class Transactions extends Component {
 
     state = {
         page: 0
-    }
+    }//this section is set up to show 10 transactions on the page using a next and previous button
     componentDidMount = async () => {
         const response = await axios.get(`api/transactions/${this.state.page}/10`);
         this.props.dispatch({ type: 'SET_TRANSACTIONS', payload: response.data });

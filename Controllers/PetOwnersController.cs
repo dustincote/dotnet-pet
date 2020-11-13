@@ -90,7 +90,7 @@ namespace pet_hotel.Controllers
             //remove from context
             //checking to see if pet is checked in and not allowing the pet to be deleted
             bool exists = _context.pets.Any(pet => pet.petOwnerid == id && pet.checkedInAt != null);
-            if (exists) return NotFound();
+            if (exists) return BadRequest();
             Transaction note = new Transaction();
             note.transaction = $"Delete Pet Owner {petOwner.name} ";
             note.transactionTime = DateTime.UtcNow;
