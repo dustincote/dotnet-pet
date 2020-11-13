@@ -34,7 +34,7 @@ namespace pet_hotel.Controllers
         public IActionResult getPetOwnerById(int id)
         {
             PetOwner petOwner = _context.petOwners.Find(id);
-            if (petOwner == null){
+            if (petOwner == null){//if a pet is checked in, it is not able to be deleted
                 ModelState.AddModelError("checkedIn", "Pet Checked in cannot delete");
                 return ValidationProblem(ModelState);
             };
@@ -48,7 +48,7 @@ namespace pet_hotel.Controllers
         {
             Transaction note = new Transaction();
             note.transaction = $"Posting new pet owner {newOwner.name}";
-            note.transactionTime = DateTime.UtcNow;
+            note.transactionTime = DateTime.UtcNow;//this updates the time
             _context.Add(note);
             _context.Add(newOwner);
             _context.SaveChanges();

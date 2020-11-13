@@ -15,7 +15,7 @@ namespace pet_hotel.Controllers
         public TransactionsController(ApplicationContext context) {
             _context = context;
         }
-
+        //Sets the transactions to only show 10 at a time on the page
         [HttpGet("{start}/{limit}")]
         public IEnumerable<Transaction> getAllTransactions(int start, int limit)
         {
